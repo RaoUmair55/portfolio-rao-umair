@@ -8,7 +8,7 @@ interface Certification {
   issuer: string;
   date: string;
   icon: string;
-  credentialId: string;
+  credentialId?: string;
   skills: string[];
 }
 
