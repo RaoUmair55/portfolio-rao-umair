@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f1f5ff;
+    --text2: #8b9ab5;
+    --text3: #4d5f7a;
+    
+    /* Dynamic Variables */
+    --accent: #F97316;
+    --accent-glow: rgba(249, 115, 22, 0.15);
+    --card-padding: 2rem;
+  }
+  
+  .compact-mode {
+    --card-padding: 1.25rem;
+  }
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* --- Aesthetic Background Styles --- */
+
+/* Grainy Noise Overlay */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Liquid Mesh Animations */
+@keyframes liquid {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  33% { transform: translate(10% , -15%) scale(1.2) rotate(4deg); }
+  66% { transform: translate(-5% , 10%) scale(0.9) rotate(-4deg); }
+  100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+}
+
+.animate-liquid {
+  animation: liquid 25s infinite ease-in-out;
+}
+
+.animate-liquid-slow {
+  animation: liquid 35s infinite ease-in-out reverse;
+}
+
+/* Ambient Beam Animation */
+@keyframes beam-slide {
+  0% { transform: translateX(-100%) skewX(-15deg); opacity: 0; }
+  20% { opacity: 0.5; }
+  80% { opacity: 0.5; }
+  100% { transform: translateX(200%) skewX(-15deg); opacity: 0; }
+}
+
+.animate-beam {
+  animation: beam-slide 8s infinite ease-in-out;
+}
+
+/* --- UI Components --- */
+
+.glass-morphism {
+  background: rgba(22, 27, 39, 0.65);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid var(--border);
+}
+
+.glass-card {
+  background: rgba(30, 37, 53, 0.35);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  padding: var(--card-padding);
+}
+
+.glass-card:hover {
+  background: rgba(30, 37, 53, 0.55);
+  border-color: var(--accent);
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+}
+
+.accent-gradient-text {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--text) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.accent-bg {
+  background: var(--accent);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg3);
+  border-radius: 10px;
+}
+
+/* Selection */
+::selection {
+  background: var(--accent-glow);
+  color: var(--accent);
+}
+
+html {
+  scroll-behavior: smooth;
+}
