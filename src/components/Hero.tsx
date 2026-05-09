@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import Tilt from 'react-parallax-tilt';
+import TiltComponent from 'react-parallax-tilt';
+
+const Tilt = TiltComponent as any;
 
 const useTypingEffect = (text: string, speed = 40) => {
   const [displayText, setDisplayText] = useState('');
