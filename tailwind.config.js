@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	darkMode: ['class'],
 	content: [
 		'./pages/**/*.{ts,tsx}',
 		'./components/**/*.{ts,tsx}',
@@ -11,68 +10,34 @@ module.exports = {
 		container: {
 			center: true,
 			padding: '2rem',
-			screens: {
-				'2xl': '1400px',
-			},
+			screens: { '2xl': '1400px' },
 		},
 		extend: {
+			fontFamily: {
+				display: ['Space Grotesk', 'system-ui', 'sans-serif'],
+				body: ['Inter', 'system-ui', 'sans-serif'],
+			},
+			fontSize: {
+				'hero': ['clamp(40px, 7vw, 88px)', { lineHeight: '1', fontWeight: '700' }],
+				'section': ['clamp(30px, 4vw, 48px)', { lineHeight: '1.1', fontWeight: '600' }],
+				'card': ['20px', { lineHeight: '1.3', fontWeight: '500' }],
+			},
 			colors: {
-				border: 'rgba(255,255,255,0.08)',
-				input: 'rgba(255,255,255,0.14)',
-				ring: '#F97316',
-				background: '#0f1117',
-				foreground: '#f1f5ff',
-				primary: {
-					DEFAULT: '#0f1117',
-					foreground: '#f1f5ff',
+				green: {
+					primary: '#0F5D36',
+					secondary: '#2F7A57',
 				},
-				secondary: {
-					DEFAULT: '#161b27',
-					foreground: '#8b9ab5',
-				},
-				accent: {
-					DEFAULT: '#F97316',
-					foreground: '#ffffff',
-				},
-				slate: {
-					950: '#0f1117',
-					900: '#161b27',
-					800: '#1e2535',
-					700: '#4d5f7a',
-					600: '#8b9ab5',
-					500: '#8b9ab5',
-					400: '#8b9ab5',
-					300: '#f1f5ff',
-					200: '#f1f5ff',
-					100: '#f1f5ff',
-					50: '#f1f5ff',
-				},
-				orange: {
-					500: '#F97316',
-					400: '#fb923c',
-					600: '#ea580c',
-				}
+				'accent-blue': '#D9ECF3',
+				'bg-main': '#F7F7F4',
+				'text-primary': '#1A1A1A',
+				'text-muted': '#6B7280',
 			},
 			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)',
-			},
-			keyframes: {
-				'accordion-down': {
-					from: { height: 0 },
-					to: { height: 'var(--radix-accordion-content-height)' },
-				},
-				'accordion-up': {
-					from: { height: 'var(--radix-accordion-content-height)' },
-					to: { height: 0 },
-				},
-			},
-			animation: {
-				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out',
+				'2xl': '1.25rem',
+				'3xl': '1.5rem',
+				'4xl': '1.75rem',
 			},
 		},
 	},
-	plugins: [require('tailwindcss-animate')],
+	plugins: [],
 }

@@ -1,0 +1,304 @@
+/* ══════════════════════════════════════════════════════════════════
+   Warm Agency Design System — Portable Tokens
+   Source: Teraways Design Company
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ─── 1. Fonts ─────────────────────────────────────────────────── */
+/* Import in your HTML/CSS:
+   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@400;500;600;700;800&display=swap');
+*/
+
+:root {
+  /* ─── 2. Color Palette ──────────────────────────────────────── */
+
+  /* Background System (Warm Neutrals) */
+  --cream:            #FAF8F5;
+  --cream-dark:       #F2EFE9;
+  --cream-darker:     #E8E3DB;
+  --parchment:        #F5F1EA;
+  --warm-white:       #FFFDF9;
+
+  /* Foreground System (Warm Charcoal Scale) */
+  --charcoal:         #1C1917;  /* Primary text, headings, dark sections */
+  --charcoal-muted:   #44403C;  /* Body text, nav items */
+  --charcoal-subtle:  #78716C;  /* Muted text, eyebrow text, descriptions */
+  --charcoal-faint:   #A8A29E;  /* Very muted text, labels, placeholders */
+
+  /* Brand Accents */
+  --terracotta:       #C2410C;  /* Primary accent — CTAs, links, underline */
+  --terracotta-light: #EA580C;  /* Hover state for terracotta */
+  --amber:            #D97706;  /* Secondary accent — blobs, highlights */
+  --sage:             #4A7C59;  /* Tertiary accent — success, pulsing dots */
+
+  /* Card System */
+  --card:             #FFFDF9;
+  --card-elevated:    #FAF8F5;
+  --card-foreground:  #1C1917;
+  --card-border:      #E8E3DB;
+
+  /* Borders & Inputs */
+  --border:           #E8E3DB;
+  --border-light:     #F2EFE9;
+  --input:            #E8E3DB;
+  --input-background: #FFFDF9;
+  --ring:             #C2410C;
+
+  /* Glass (Warm Frosted) */
+  --glass-bg:     rgba(250, 248, 245, 0.92);
+  --glass-border: rgba(232, 227, 219, 0.9);
+
+  /* Dark Section Colors */
+  --dark-card:        #2C2825;
+  --dark-border:      #3C3835;
+  --dark-text:        #FAF8F5;
+  --dark-muted:       #A8A29E;
+
+  /* ─── 3. Typography ──────────────────────────────────────────── */
+  --font-display: 'Syne', system-ui, sans-serif;   /* All headings h1-h6 */
+  --font-body:    'DM Sans', system-ui, sans-serif;  /* All body text */
+
+  --font-weight-normal:   400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+
+  /* ─── 4. Border Radius ───────────────────────────────────────── */
+  --radius-sm: 0.375rem;  /* 6px  — tags, badges */
+  --radius-md: 0.75rem;   /* 12px — cards, inputs, buttons */
+  --radius-lg: 1rem;      /* 16px — larger cards */
+  --radius-xl: 1.5rem;    /* 24px — hero cards, modals */
+
+  /* ─── 5. Shadows (Warm-toned, brown-based) ──────────────────── */
+  --shadow-sm:  0 1px 3px rgba(28,25,23,0.07),  0 1px 2px rgba(28,25,23,0.04);
+  --shadow-md:  0 4px 6px rgba(28,25,23,0.06),  0 2px 4px rgba(28,25,23,0.04);
+  --shadow-lg:  0 10px 15px rgba(28,25,23,0.06), 0 4px 6px rgba(28,25,23,0.03);
+  --shadow-xl:  0 20px 25px rgba(28,25,23,0.07), 0 8px 10px rgba(28,25,23,0.04);
+  --shadow-glow: 0 0 30px rgba(194, 65, 12, 0.10);
+
+  /* ─── 6. Spacing ─────────────────────────────────────────────── */
+  --spacing-xs:  0.5rem;   /* 8px  */
+  --spacing-sm:  1rem;     /* 16px */
+  --spacing-md:  2rem;     /* 32px */
+  --spacing-lg:  3rem;     /* 48px */
+  --spacing-xl:  4rem;     /* 64px */
+  --spacing-2xl: 6rem;     /* 96px */
+  --spacing-3xl: 8rem;     /* 128px */
+}
+
+/* ─── 7. Base Styles ──────────────────────────────────────────── */
+body {
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--charcoal);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  color: var(--charcoal);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+/* ─── 8. Reusable Design Patterns ─────────────────────────────── */
+
+/* --- 8A. Grain Texture Overlay --- */
+.grain-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+/* Dark variant */
+.grain-overlay-dark {
+  opacity: 0.02;
+}
+
+/* --- 8B. Warm Blob Gradients --- */
+.blob-amber {
+  background: rgba(217, 119, 6, 0.06);
+  filter: blur(120px);
+  border-radius: 50%;
+}
+
+.blob-terracotta {
+  background: rgba(194, 65, 12, 0.05);
+  filter: blur(120px);
+  border-radius: 50%;
+}
+
+/* --- 8C. Eyebrow Badge (Pill) --- */
+.badge-warm {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 1rem;
+  border-radius: 9999px;
+  background: #FFF7ED;
+  border: 1px solid #FED7AA;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #C2410C;
+  font-family: var(--font-body);
+}
+
+/* --- 8D. Green Pulsing Dot --- */
+.dot-green {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--sage);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Terminal green dot for dark backgrounds */
+.dot-terminal {
+  background: #4ADE80;
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.8);
+}
+
+/* --- 8E. Hand-Drawn Underline --- */
+.underline-hand {
+  position: relative;
+  display: inline-block;
+}
+
+.underline-hand::after {
+  content: '';
+  position: absolute;
+  bottom: -0.25rem;
+  left: 0;
+  width: 100%;
+  height: 0.5rem;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 9C60 4 140 2 200 5C260 8 340 11 398 7' stroke='%23C2410C' stroke-width='3.5' stroke-linecap='round' opacity='0.7'/%3E%3C/svg%3E");
+  background-size: cover;
+  opacity: 0.7;
+}
+
+/* --- 8F. Card Styles --- */
+.card {
+  background: var(--warm-white);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-hoverable {
+  transition: all 0.3s ease;
+}
+
+.card-hoverable:hover {
+  border-color: rgba(194, 65, 12, 0.3);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-0.375rem);
+}
+
+/* Dark card */
+.card-dark {
+  background: rgba(44, 40, 37, 0.6);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(20px);
+  color: var(--dark-text);
+}
+
+/* --- 8G. Button Styles --- */
+.btn-primary {
+  background: var(--charcoal);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-semibold);
+  padding: 0.875rem 1.75rem;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 16px rgba(28, 25, 23, 0.25);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: var(--terracotta);
+  box-shadow: 0 6px 24px rgba(194, 65, 12, 0.35);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--charcoal-muted);
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-semibold);
+  padding: 0.875rem 1.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid #C8B8A8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--charcoal);
+  color: var(--charcoal);
+}
+
+/* --- 8H. Input Styles --- */
+.input-warm {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--input);
+  background: var(--input-background);
+  color: var(--charcoal);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input-warm:focus {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 2px rgba(194, 65, 12, 0.10);
+}
+
+.input-warm::placeholder {
+  color: var(--charcoal-faint);
+}
+
+/* ─── 9. Animations ───────────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}

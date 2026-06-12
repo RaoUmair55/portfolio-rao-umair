@@ -1,88 +1,112 @@
 import { motion } from 'framer-motion';
-import { useSpotlight } from '../hooks/use-spotlight';
-import { skillsData } from '../data/portfolio';
+import { useState } from 'react';
+import { skillPillars } from '../data/portfolio';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
-export const CategoryCard = ({ title, icon, skills = [], delay }) => {
-  const spotlight = useSpotlight();
+const accentColors = ['#16A34A', '#3B82F6', '#A855F7', '#F59E0B', '#94A3B8'];
+
+const SkillCard = ({ pillar, index }: { pillar: typeof skillPillars[0]; index: number }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const accent = accentColors[index] ?? '#16A34A';
 
   return (
     <motion.div
-      ref={spotlight.divRef}
-      onMouseMove={spotlight.handleMouseMove}
-      onMouseEnter={spotlight.handleMouseEnter}
-      onMouseLeave={spotlight.handleMouseLeave}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay }}
-      className="group glass-card rounded-[2.5rem] relative overflow-hidden"
+      initial={false}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`relative rounded-2xl p-5 group scroll-reveal-child`}
+      style={{
+        '--i': index,
+        background: '#1A2E1C',
+        border: `1px solid ${isHovered ? '#16A34A' : '#2D4A2F'}`,
+        borderLeft: `3px solid ${accent}`,
+        boxShadow: isHovered ? '0 12px 32px rgba(0,0,0,0.12)' : '0 4px 16px rgba(0,0,0,0.25)',
+        transform: isHovered ? 'translateY(-4px)' : 'none',
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
+      } as React.CSSProperties}
     >
-       {/* Intense Spotlight Background Glow */}
-       <div
-        className="pointer-events-none absolute -inset-px transition duration-300"
-        style={{
-          opacity: spotlight.opacity * 0.8,
-          background: `radial-gradient(800px circle at ${spotlight.position.x}px ${spotlight.position.y}px, var(--accent-glow), transparent 60%)`,
-        }}
-      />
-      
-      {/* Enhanced Spotlight Border Glow (Near Cursor) */}
-      <div
-        className="pointer-events-none absolute -inset-px rounded-[2.5rem] border-[2.5px] border-[var(--accent)] transition duration-300"
-        style={{
-          opacity: spotlight.opacity,
-          maskImage: `radial-gradient(180px circle at ${spotlight.position.x}px ${spotlight.position.y}px, black 0%, transparent 100%)`,
-          WebkitMaskImage: `radial-gradient(180px circle at ${spotlight.position.x}px ${spotlight.position.y}px, black 0%, transparent 100%)`,
-          filter: 'drop-shadow(0 0 12px var(--accent))',
-        }}
-      />
-
-      <div className="relative">
-        <div className="flex items-center gap-6 mb-10">
-          <div className="w-16 h-16 rounded-3xl accent-bg flex items-center justify-center text-3xl shadow-xl group-hover:rotate-6 transition-transform shadow-[var(--accent-glow)]">
-            {icon}
-          </div>
-          <div>
-            <h3 className="text-2xl font-black text-white">{title}</h3>
-            <p className="text-[var(--accent)] font-bold text-xs uppercase tracking-widest">{skills.length} Expertise</p>
-          </div>
+      {/* Sliding green top border */}
+      <div className="absolute top-0 left-3 right-3 h-0.5 bg-[#16A34A] rounded-t-2xl" style={{ transform: isHovered ? 'scaleX(1)' : 'scaleX(0)', transformOrigin: 'left', transition: 'transform 0.2s ease' }} />
+      <div className="flex items-start gap-3 mb-3">
+        <div
+          className="w-10 h-10 rounded-xl flex items-center justify-center text-base flex-shrink-0 transition-transform duration-200"
+          style={{
+            background: `${accent}15`,
+            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+          }}
+        >
+          {pillar.icon}
         </div>
-
-        <div className="flex flex-wrap gap-3">
-          {skills.map((skill, index) => (
-            <motion.div
-              key={skill.name}
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-slate-900/50 border border-white/5 group/skill"
-            >
-              <span className="text-lg grayscale group-hover/skill:grayscale-0 transition-all">{skill.icon}</span>
-              <span className="text-slate-300 font-bold text-sm group-hover/skill:text-white transition-colors">{skill.name}</span>
-            </motion.div>
-          ))}
+        <div className="flex-1 min-w-0">
+          <h3 className="text-card font-display" style={{ color: '#F0F0F0' }}>{pillar.title}</h3>
+          <p className="text-[11px] mt-0.5 leading-snug" style={{ color: '#9FB8A0' }}>{pillar.oneLiner}</p>
         </div>
       </div>
+
+      <div className="flex flex-wrap gap-1.5 mb-3">
+        {pillar.skills.map((skill) => (
+          <span
+            key={skill.name}
+            className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium transition-all duration-200"
+            style={{
+              background: `${accent}10`,
+              color: '#9FB8A0',
+            }}
+          >
+            <span className="text-[11px]">{skill.icon}</span>
+            {skill.name}
+          </span>
+        ))}
+      </div>
+
+      <motion.div
+        initial={false}
+        animate={{ height: isHovered ? 'auto' : 0, opacity: isHovered ? 1 : 0 }}
+        transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+        className="overflow-hidden"
+      >
+        <p
+          className="text-[11px] leading-relaxed pt-2"
+          style={{
+            color: '#9FB8A0',
+            borderTop: `1px solid ${accent}20`,
+          }}
+        >
+          {pillar.description}
+        </p>
+      </motion.div>
     </motion.div>
   );
 };
 
 const Skills = () => {
-  const categories = skillsData;
+  const { ref, isVisible } = useScrollReveal();
 
   return (
-    <section id="skills" className="py-20">
-      <div className="container mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-[var(--accent)] font-bold text-sm tracking-widest uppercase mb-4">My Expertise</p>
-          <h2 className="text-5xl md:text-6xl font-black text-white mb-6 tracking-tight">Skills</h2>
-          <div className="flex items-center justify-center gap-4">
-            <div className="h-1 w-12 bg-gradient-to-r from-transparent to-[var(--accent)] rounded-full"></div>
-            <div className="h-1 w-8 bg-[var(--accent)] rounded-full"></div>
-            <div className="h-1 w-12 bg-gradient-to-l from-transparent to-[var(--accent)] rounded-full"></div>
+    <section id="skills" className="relative z-10 py-24" style={{ background: '#0D1A0F' }}>
+      <div ref={ref} className={`container mx-auto scroll-reveal ${isVisible ? 'visible' : ''}`}>
+        <div className="text-center mb-16 relative scroll-reveal-child" style={{ '--i': 0 } as React.CSSProperties}>
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none" style={{ fontSize: 'clamp(120px, 15vw, 200px)', fontWeight: 900, color: '#16A34A', opacity: 0.05, lineHeight: 1 }}>
+              02
+            </div>
+            <span
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider mb-6"
+              style={{
+                background: '#16A34A15',
+                color: '#16A34A',
+                border: '1px solid #16A34A30',
+              }}
+            >
+              Technical Pillars
+            </span>
+            <h2 className="text-section font-bold font-display relative" style={{ color: '#F0F0F0' }}>Skills & Domains</h2>
+            <p className="mt-4 max-w-lg mx-auto relative" style={{ color: '#9FB8A0' }}>Color-coded by discipline — hover for details</p>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {categories.map((cat, i) => (
-            <CategoryCard key={cat.title || i} {...cat} delay={i * 0.06} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
+          {skillPillars.map((pillar, i) => (
+            <SkillCard key={pillar.id} pillar={pillar} index={i} />
           ))}
         </div>
       </div>
