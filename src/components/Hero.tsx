@@ -67,7 +67,7 @@ const StatCard = ({ item }: { item: typeof statItems[0] }) => {
 
 const statItems = [
   { type: 'number' as const, target: 38, suffix: '+', label: 'Public Repos', sub: 'Open Source on GitHub' },
-  { type: 'number' as const, target: 4, suffix: '', label: 'Live Projects', sub: 'Research & Security' },
+  { type: 'number' as const, target: 4, suffix: '', label: 'Live Projects', sub: '' },
   { type: 'number' as const, target: 3, suffix: '', label: 'Certifications', sub: 'Google & ISC²' },
   { type: 'text' as const, text: 'MITRE', label: 'ATT&CK', sub: 'Framework Trained' },
 ];
