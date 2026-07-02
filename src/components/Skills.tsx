@@ -1,114 +1,256 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { skillPillars } from '../data/portfolio';
-import { useScrollReveal } from '../hooks/useScrollReveal';
 
-const accentColors = ['#16A34A', '#3B82F6', '#A855F7', '#F59E0B', '#94A3B8'];
-
-const SkillCard = ({ pillar, index }: { pillar: typeof skillPillars[0]; index: number }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const accent = accentColors[index] ?? '#16A34A';
-
-  return (
-    <motion.div
-      initial={false}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className={`relative rounded-2xl p-5 group scroll-reveal-child`}
-      style={{
-        '--i': index,
-        background: '#1A2E1C',
-        border: `1px solid ${isHovered ? '#16A34A' : '#2D4A2F'}`,
-        borderLeft: `3px solid ${accent}`,
-        boxShadow: isHovered ? '0 12px 32px rgba(0,0,0,0.12)' : '0 4px 16px rgba(0,0,0,0.25)',
-        transform: isHovered ? 'translateY(-4px)' : 'none',
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
-      } as React.CSSProperties}
-    >
-      {/* Sliding green top border */}
-      <div className="absolute top-0 left-3 right-3 h-0.5 bg-[#16A34A] rounded-t-2xl" style={{ transform: isHovered ? 'scaleX(1)' : 'scaleX(0)', transformOrigin: 'left', transition: 'transform 0.2s ease' }} />
-      <div className="flex items-start gap-3 mb-3">
-        <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center text-base flex-shrink-0 transition-transform duration-200"
-          style={{
-            background: `${accent}15`,
-            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-          }}
-        >
-          {pillar.icon}
-        </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="text-card font-display" style={{ color: '#F0F0F0' }}>{pillar.title}</h3>
-          <p className="text-[11px] mt-0.5 leading-snug" style={{ color: '#9FB8A0' }}>{pillar.oneLiner}</p>
-        </div>
-      </div>
-
-      <div className="flex flex-wrap gap-1.5 mb-3">
-        {pillar.skills.map((skill) => (
-          <span
-            key={skill.name}
-            className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-medium transition-all duration-200"
-            style={{
-              background: `${accent}10`,
-              color: '#9FB8A0',
-            }}
-          >
-            <span className="text-[11px]">{skill.icon}</span>
-            {skill.name}
-          </span>
-        ))}
-      </div>
-
-      <motion.div
-        initial={false}
-        animate={{ height: isHovered ? 'auto' : 0, opacity: isHovered ? 1 : 0 }}
-        transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-        className="overflow-hidden"
-      >
-        <p
-          className="text-[11px] leading-relaxed pt-2"
-          style={{
-            color: '#9FB8A0',
-            borderTop: `1px solid ${accent}20`,
-          }}
-        >
-          {pillar.description}
-        </p>
-      </motion.div>
-    </motion.div>
-  );
+const BORDER_COLORS: Record<string, string> = {
+  cybersecurity: 'var(--orange-mid)',
+  aiml: 'var(--green-mid)',
+  dip: '#eab308',
+  programming: '#3b82f6',
+  backend: '#8b5cf6',
 };
 
 const Skills = () => {
-  const { ref, isVisible } = useScrollReveal();
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const [isMobile, setIsMobile] = useState(false);
+  const [activeId, setActiveId] = useState<string | null>(skillPillars[0].id);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const activePillar = skillPillars.find(p => p.id === activeId) || skillPillars[0];
+  const activeColor = BORDER_COLORS[activePillar.id];
+
+  // Radial calculation
+  const RADIUS = 280;
+  const getOrbitPosition = (index: number) => {
+    // Start at -90deg (top)
+    const angleDeg = -90 + (index * (360 / skillPillars.length));
+    const angleRad = angleDeg * (Math.PI / 180);
+    return {
+      x: Math.cos(angleRad) * RADIUS,
+      y: Math.sin(angleRad) * RADIUS
+    };
+  };
 
   return (
-    <section id="skills" className="relative z-10 py-24" style={{ background: '#0D1A0F' }}>
-      <div ref={ref} className={`container mx-auto scroll-reveal ${isVisible ? 'visible' : ''}`}>
-        <div className="text-center mb-16 relative scroll-reveal-child" style={{ '--i': 0 } as React.CSSProperties}>
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none" style={{ fontSize: 'clamp(120px, 15vw, 200px)', fontWeight: 900, color: '#16A34A', opacity: 0.05, lineHeight: 1 }}>
-              02
-            </div>
-            <span
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider mb-6"
-              style={{
-                background: '#16A34A15',
-                color: '#16A34A',
-                border: '1px solid #16A34A30',
-              }}
-            >
-              Technical Pillars
-            </span>
-            <h2 className="text-section font-bold font-display relative" style={{ color: '#F0F0F0' }}>Skills & Domains</h2>
-            <p className="mt-4 max-w-lg mx-auto relative" style={{ color: '#9FB8A0' }}>Color-coded by discipline — hover for details</p>
+    <section id="skills" ref={sectionRef} className="section-premium section-light" style={{ background: 'var(--bg-elevated)', paddingTop: '8rem', paddingBottom: '8rem', overflow: 'hidden' }}>
+      <div className="container-premium">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.8 }}
+          style={{ textAlign: 'center', marginBottom: isMobile ? '3rem' : '1rem' }}
+        >
+          <p className="eyebrow">Expertise</p>
+          <h2 className="section-title font-display" style={{ color: 'var(--text-primary)', fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+            Skills across the stack.
+          </h2>
+          <p className="section-subtitle" style={{ margin: '1.5rem auto 0', color: 'var(--text-secondary)', fontSize: '1.125rem' }}>
+            {!isMobile ? 'Select a domain on the orbital ring to explore.' : 'The domains I work in every day.'}
+          </p>
+        </motion.div>
+
+        {isMobile ? (
+          // MOBILE LAYOUT: Simple vertical stack
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            {skillPillars.map((pillar) => {
+              const accentColor = BORDER_COLORS[pillar.id] || 'var(--orange-mid)';
+              return (
+                <div key={pillar.id} className="premium-metric-card" style={{ borderTop: `3px solid ${accentColor}` }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+                    <div style={{ width: 48, height: 48, borderRadius: '1rem', background: `rgba(0,0,0,0.03)`, color: accentColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>
+                      {pillar.icon}
+                    </div>
+                    <div>
+                      <h3 className="font-display" style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)' }}>{pillar.title}</h3>
+                      <p style={{ fontSize: '0.875rem', color: 'var(--text-tertiary)', fontWeight: 500 }}>{pillar.oneLiner}</p>
+                    </div>
+                  </div>
+                  <p style={{ fontSize: '0.9375rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '2rem' }}>{pillar.description}</p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                    {pillar.skills.map(s => (
+                      <span key={s.name} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', padding: '0.4rem 0.875rem', background: 'rgba(0,0,0,0.03)', borderRadius: '2rem', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-secondary)', border: '1px solid rgba(0,0,0,0.05)' }}>
+                        <span style={{ fontSize: '0.9rem' }}>{s.icon}</span>{s.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
-          {skillPillars.map((pillar, i) => (
-            <SkillCard key={pillar.id} pillar={pillar} index={i} />
-          ))}
-        </div>
+        ) : (
+          // DESKTOP LAYOUT: Interactive Radial Wheel
+          <div 
+            style={{ 
+              position: 'relative', 
+              height: '800px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              marginTop: '1rem'
+            }}
+          >
+            {/* Spinning decorative background rings */}
+            <motion.div 
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
+              style={{
+                position: 'absolute',
+                width: `${RADIUS * 2}px`,
+                height: `${RADIUS * 2}px`,
+                borderRadius: '50%',
+                border: '1px dashed rgba(0,0,0,0.08)',
+                zIndex: 0
+              }}
+            />
+            <motion.div 
+              animate={{ rotate: -360 }}
+              transition={{ repeat: Infinity, duration: 80, ease: "linear" }}
+              style={{
+                position: 'absolute',
+                width: `${RADIUS * 2.4}px`,
+                height: `${RADIUS * 2.4}px`,
+                borderRadius: '50%',
+                border: '1px solid rgba(0,0,0,0.03)',
+                zIndex: 0
+              }}
+            />
+
+            {/* Orbit Nodes */}
+            <AnimatePresence>
+              {isInView && skillPillars.map((pillar, index) => {
+                const pos = getOrbitPosition(index);
+                const isActive = activeId === pillar.id;
+                const nodeColor = BORDER_COLORS[pillar.id] || 'var(--orange-mid)';
+                
+                return (
+                  <motion.div
+                    key={`node-${pillar.id}`}
+                    initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
+                    animate={{ opacity: 1, scale: 1, x: pos.x, y: pos.y }}
+                    transition={{ type: "spring", damping: 15, delay: index * 0.1 }}
+                    style={{
+                      position: 'absolute',
+                      zIndex: 10,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      cursor: 'pointer'
+                    }}
+                    onMouseEnter={() => setActiveId(pillar.id)}
+                  >
+                    <motion.div 
+                      whileHover={{ scale: 1.1 }}
+                      animate={{ 
+                        boxShadow: isActive ? `0 0 20px ${nodeColor}40` : '0 4px 12px rgba(0,0,0,0.05)',
+                        borderColor: isActive ? nodeColor : 'rgba(0,0,0,0.08)'
+                      }}
+                      style={{
+                        width: 72,
+                        height: 72,
+                        borderRadius: '50%',
+                        background: 'var(--bg-elevated)',
+                        border: '2px solid',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '1.75rem',
+                        color: isActive ? nodeColor : 'var(--text-tertiary)',
+                        transition: 'color 0.3s'
+                      }}
+                    >
+                      {pillar.icon}
+                    </motion.div>
+                    <div style={{
+                      background: 'rgba(255,255,255,0.9)',
+                      padding: '0.25rem 0.75rem',
+                      borderRadius: '1rem',
+                      fontSize: '0.875rem',
+                      fontWeight: 600,
+                      color: isActive ? 'var(--text-primary)' : 'var(--text-tertiary)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                      border: '1px solid rgba(0,0,0,0.05)'
+                    }}>
+                      {pillar.title}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+
+            {/* Center Data Core */}
+            <motion.div
+              layoutId="center-core"
+              style={{
+                position: 'absolute',
+                width: '380px',
+                height: '380px',
+                borderRadius: '50%',
+                background: 'var(--bg-elevated)',
+                boxShadow: `0 20px 40px -10px ${activeColor}20`,
+                border: `1px solid ${(activeId === 'cybersecurity' || activeId === 'aiml') ? 'rgba(255,255,255,0.8)' : activeColor + '30'}`,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '2.5rem',
+                textAlign: 'center',
+                zIndex: 5
+              }}
+              animate={{ 
+                borderColor: (activeId === 'cybersecurity' || activeId === 'aiml') ? '#ffffff' : `${activeColor}40`, 
+                boxShadow: `0 20px 40px -10px ${activeColor}20` 
+              }}
+              transition={{ duration: 0.4 }}
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activePillar.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.2 }}
+                  style={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center', 
+                    height: '100%',
+                    width: '100%',
+                    overflowY: 'auto',
+                    paddingRight: '0.5rem'
+                  }}
+                  className="premium-core-scroll"
+                >
+                  <div style={{ color: activeColor, fontSize: '2.5rem', marginBottom: '1rem', flexShrink: 0 }}>
+                    {activePillar.icon}
+                  </div>
+                  <h3 className="font-display" style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.5rem', flexShrink: 0 }}>
+                    {activePillar.title}
+                  </h3>
+                  <p style={{ fontSize: '0.9rem', lineHeight: 1.6, color: 'var(--text-secondary)', marginBottom: '1.5rem', flexShrink: 0 }}>
+                    {activePillar.description}
+                  </p>
+                  
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', justifyContent: 'center', flexShrink: 0 }}>
+                    {activePillar.skills.map(s => (
+                      <span key={s.name} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.35rem 0.75rem', background: 'var(--bg-base)', borderRadius: '2rem', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)', border: '1px solid var(--border-light)' }}>
+                        <span style={{ fontSize: '0.8rem' }}>{s.icon}</span>{s.name}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </motion.div>
+
+          </div>
+        )}
       </div>
     </section>
   );

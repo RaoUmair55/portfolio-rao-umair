@@ -1,301 +1,413 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useMagnetic } from '../hooks/useMagnetic';
 
-const navLinks = [
-  { id: 'about', label: 'About' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'skills', label: 'Skills', hasDropdown: true },
-  { id: 'certifications', label: 'Certifications' },
-  { id: 'contact', label: 'Contact' },
+const NAV_LINKS = [
+  { id: 'home',     label: 'Home'     },
+  { id: 'projects', label: 'Work'     },
+  { id: 'about',    label: 'About'    },
+  { id: 'skills',   label: 'Skills'   },
+  { id: 'contact',  label: 'Contact'  },
 ];
 
-const dropdownColumns = [
-  {
-    icon: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg>
-    ),
-    title: 'Cybersecurity',
-    skills: ['Wazuh SIEM', 'Honeypot Deployment', 'Custom Detection Rules', 'MITRE ATT&CK', 'Incident Response'],
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2a8 8 0 00-8 8c0 5 8 12 8 12s8-7 8-12a8 8 0 00-8-8z" /><circle cx="12" cy="10" r="3" />
-      </svg>
-    ),
-    title: 'AI / ML / DL',
-    skills: ['Scikit-learn', 'TensorFlow / PyTorch', 'Model Building', 'Classification', 'Deep Learning'],
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" />
-      </svg>
-    ),
-    title: 'Digital Image Processing',
-    skills: ['OpenCV', 'Morphological Operations', 'Edge Detection', 'Frequency Filtering', 'K-Means Clustering'],
-  },
-  {
-    icon: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />
-      </svg>
-    ),
-    title: 'Programming',
-    skills: ['Python', 'C++', 'MATLAB'],
-  },
-];
+const GitHubIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+  </svg>
+);
+
+const LinkedInIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+  </svg>
+);
+
+const SunIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="5"></circle>
+    <line x1="12" y1="1" x2="12" y2="3"></line>
+    <line x1="12" y1="21" x2="12" y2="23"></line>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+    <line x1="1" y1="12" x2="3" y2="12"></line>
+    <line x1="21" y1="12" x2="23" y2="12"></line>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+  </svg>
+);
+
+const MoonIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+  </svg>
+);
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [activeSection, setActiveSection] = useState('');
-  const magnetic = useMagnetic();
+  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState('home');
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const [isDark, setIsDark] = useState(() => {
+    return localStorage.getItem('theme') === 'dark' ||
+      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  });
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') setActiveDropdown(null); };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, []);
-
-  useEffect(() => {
-    const ids = navLinks.map(l => l.id);
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      }
-    }, { rootMargin: '-45% 0px -45% 0px' });
-    ids.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
-  }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    const el = document.getElementById(sectionId);
-    if (el) {
-      const offset = 80;
-      const rect = el.getBoundingClientRect();
-      window.scrollTo({ top: rect.top + window.scrollY - offset, behavior: 'smooth' });
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     }
-    setIsMobileOpen(false);
-    setActiveDropdown(null);
+  }, [isDark]);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); }),
+      { rootMargin: '-40% 0px -50% 0px' },
+    );
+    NAV_LINKS.forEach(l => {
+      const el = document.getElementById(l.id);
+      if (el) obs.observe(el);
+    });
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMobileOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [mobileOpen]);
+
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    setMobileOpen(false);
   };
 
+  const textColor = 'var(--text-primary)';
+  const mutedColor = 'var(--text-secondary)';
+
   return (
-    <motion.nav
-      initial={{ y: -80 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-      className="fixed top-0 left-0 right-0 z-50"
+    <nav
+      style={{
+        position: 'fixed',
+        top: scrolled ? '1rem' : '0',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: scrolled ? 'calc(100% - 2rem)' : '100%',
+        maxWidth: scrolled ? '1280px' : '100%',
+        zIndex: 1000,
+        background: scrolled ? 'var(--glass-light)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(24px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(24px)' : 'none',
+        border: scrolled ? '1px solid var(--border-light)' : '1px solid transparent',
+        borderBottom: scrolled ? '1px solid var(--border-light)' : '1px solid var(--border-light)',
+        borderRadius: scrolled ? '999px' : '0',
+        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        boxShadow: scrolled ? '0 10px 40px rgba(0,0,0,0.06)' : 'none',
+      }}
     >
-      <div
-        className={`transition-all duration-400 ${
-          isScrolled
-            ? 'border-b border-[rgba(22,163,74,0.15)]'
-            : ''
-        }`}
-        style={
-          isScrolled
-            ? { background: 'rgba(5,20,8,0.75)', backdropFilter: 'blur(20px) saturate(180%)', WebkitBackdropFilter: 'blur(20px) saturate(180%)' }
-            : { background: 'transparent' }
-        }
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo */}
-            <button onClick={() => scrollToSection('home')} className="flex items-center gap-2.5 group">
-              <div className="w-9 h-9 rounded-xl bg-green-primary flex items-center justify-center text-white font-black text-sm group-hover:bg-green-secondary transition-colors">
-                RU
-              </div>
-              <span className="text-lg font-bold tracking-tight text-white hidden sm:block">
-                Rao<span className="text-green-primary">.</span>Umair
-              </span>
-            </button>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        height: isMobile ? '56px' : '64px',
+        padding: isMobile ? '0 1.25rem' : '0 1.5rem',
+      }}>
+        {/* Logo */}
+        <button
+          onClick={() => scrollTo('home')}
+          aria-label="Go to home"
+          className="font-signature"
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            color: textColor,
+            fontSize: isMobile ? '1.5rem' : '1.75rem',
+            WebkitTextStroke: '0px', 
+            lineHeight: 1,
+            paddingTop: '0.25rem' // Visually center script font
+          }}
+        >
+          Rao Umair
+        </button>
 
-            {/* Desktop Nav */}
-            <div className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) => (
-                <div key={link.id} className="relative"
-                  onMouseEnter={() => link.hasDropdown && setActiveDropdown(link.id)}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
-                  <button
-                    onClick={() => {
-                      if (link.hasDropdown) {
-                        setActiveDropdown(activeDropdown === link.id ? null : link.id);
-                      } else {
-                        scrollToSection(link.id);
-                      }
+        {/* Desktop Links */}
+        {!isMobile && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }} onMouseLeave={() => setHovered(null)}>
+            {NAV_LINKS.map(l => (
+              <div 
+                key={l.id}
+                style={{ position: 'relative' }}
+                onMouseEnter={() => setHovered(l.id)}
+              >
+                {(hovered === l.id || (!hovered && active === l.id)) && (
+                  <motion.div
+                    layoutId="nav-pill"
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'var(--border-light)',
+                      borderRadius: '999px',
+                      zIndex: 0
                     }}
-                    className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200 relative ${
-                      activeDropdown === link.id
-                        ? 'text-green-primary bg-[rgba(22,163,74,0.15)]'
-                        : activeSection === link.id
-                        ? 'text-green-primary'
-                        : isScrolled
-                        ? 'text-white/70 hover:text-white hover:bg-white/10'
-                        : 'text-white/80 hover:text-white hover:bg-white/10'
-                    }`}
-                  >
-                    <span className="flex items-center gap-1">
-                      {link.label}
-                      {link.hasDropdown && (
-                        <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === link.id ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      )}
-                    </span>
-                    {/* Active underline */}
-                    {activeSection === link.id && (
-                      <motion.div
-                        layoutId="nav-underline"
-                        className="absolute -bottom-0.5 left-1/2 h-0.5 bg-green-primary rounded-full"
-                        style={{ width: '60%', transform: 'translateX(-50%)' }}
-                        transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-                      />
-                    )}
-                  </button>
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <button
+                  onClick={() => scrollTo(l.id)}
+                  style={{
+                    position: 'relative',
+                    zIndex: 1,
+                    padding: '0.5rem 1rem',
+                    background: 'transparent',
+                    border: 'none',
+                    color: (hovered === l.id || (!hovered && active === l.id)) ? textColor : mutedColor,
+                    fontSize: '0.9375rem',
+                    fontWeight: (hovered === l.id || (!hovered && active === l.id)) ? 600 : 500,
+                    cursor: 'pointer',
+                    transition: 'color 0.2s ease, font-weight 0.2s ease',
+                  }}
+                >
+                  {l.label}
+                </button>
+              </div>
+            ))}
 
-                  {/* Mega Menu Dropdown */}
-                  <AnimatePresence>
-                    {link.hasDropdown && activeDropdown === link.id && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 8, scale: 0.98 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                        transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 mega-menu p-6 min-w-[680px]"
-                      >
-                        <div className="flex gap-8">
-                          <div className="flex-1 grid grid-cols-3 gap-6">
-                            {dropdownColumns.map((col) => (
-                              <div key={col.title}>
-                                <div className="flex items-center gap-2 mb-3 text-green-primary">
-                                  {col.icon}
-                                  <h4 className="text-sm font-bold text-text-primary">{col.title}</h4>
-                                </div>
-                                <ul className="space-y-2">
-                                  {col.skills.map((skill) => (
-                                    <li key={skill} className="text-sm text-text-muted hover:text-green-primary transition-colors cursor-default">
-                                      {skill}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            ))}
-                          </div>
-                          <div className="w-44 flex-shrink-0">
-                            <div className="bg-accent-blue rounded-2xl p-4 h-full flex flex-col items-center justify-center text-center">
-                              <div className="w-10 h-10 rounded-xl bg-green-primary flex items-center justify-center text-white text-lg mb-3">
-                                🛡️
-                              </div>
-                              <p className="text-xs font-bold text-text-primary leading-relaxed">
-                                Defensive Security<br />Meets<br />Artificial Intelligence
-                              </p>
-                              <div className="mt-3 w-8 h-[2px] bg-green-primary/30 rounded" />
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
-            </div>
-
-            {/* CTA + Mobile Toggle */}
-            <div className="flex items-center gap-3">
-              <motion.button
-                ref={magnetic.ref}
-                onClick={() => scrollToSection('contact')}
-                onMouseMove={magnetic.handleMouseMove}
-                onMouseLeave={magnetic.handleMouseLeave}
-                className="hidden md:inline-flex px-5 py-2.5 rounded-xl bg-green-primary text-white text-sm font-semibold"
-                style={{
-                  boxShadow: '0 4px 14px rgba(15,93,54,0.25)',
-                  transform: magnetic.transform,
-                  transition: 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                }}
-                animate={{
-                  boxShadow: [
-                    '0 4px 14px rgba(15,93,54,0.25)',
-                    '0 4px 24px rgba(15,93,54,0.45)',
-                    '0 4px 14px rgba(15,93,54,0.25)',
-                  ],
-                }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                Hire Me
-              </motion.button>
+            {/* Socials Divider */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              marginLeft: '0.5rem',
+              paddingLeft: '1rem',
+              borderLeft: `1px solid var(--border-light)`,
+              height: '24px'
+            }}>
+              <a href="https://github.com/RaoUmair55" target="_blank" rel="noopener noreferrer"
+                style={{ color: mutedColor, display: 'flex', transition: 'color 0.2s' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = textColor}
+                onMouseLeave={(e) => e.currentTarget.style.color = mutedColor}
+                aria-label="GitHub">
+                <GitHubIcon />
+              </a>
+              <a href="https://linkedin.com/in/rao-umair-ahmed" target="_blank" rel="noopener noreferrer"
+                style={{ color: mutedColor, display: 'flex', transition: 'color 0.2s' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#0077b5'}
+                onMouseLeave={(e) => e.currentTarget.style.color = mutedColor}
+                aria-label="LinkedIn">
+                <LinkedInIcon />
+              </a>
+              
               <button
-                onClick={() => setIsMobileOpen(!isMobileOpen)}
-                className={`md:hidden p-2 rounded-xl transition-all ${isScrolled ? 'text-white/70 hover:bg-white/10' : 'text-white hover:bg-white/10'}`}
-                aria-label="Toggle menu"
+                onClick={() => setIsDark(!isDark)}
+                style={{
+                  color: mutedColor,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '0.25rem',
+                  marginLeft: '0.25rem',
+                  transition: 'color 0.2s ease, transform 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = textColor;
+                  e.currentTarget.style.transform = 'rotate(15deg)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = mutedColor;
+                  e.currentTarget.style.transform = 'rotate(0deg)';
+                }}
+                aria-label="Toggle Dark Mode"
               >
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  {isMobileOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  )}
-                </svg>
+                {isDark ? <SunIcon /> : <MoonIcon />}
               </button>
             </div>
+
+            {/* CTA Button */}
+            <button
+              onClick={() => scrollTo('contact')}
+              style={{
+                marginLeft: '1.25rem',
+                padding: '0.625rem 1.25rem',
+                fontSize: '0.9375rem',
+                fontWeight: 600,
+                background: 'var(--text-primary)',
+                color: 'var(--bg-base)',
+                border: 'none',
+                borderRadius: '999px',
+                cursor: 'pointer',
+                transition: 'transform 0.2s ease, background 0.2s ease',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            >
+              Let's Talk
+            </button>
           </div>
-        </div>
+        )}
+
+        {/* Mobile Menu Toggle & Theme Toggle */}
+        {isMobile && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <button
+              onClick={() => setIsDark(!isDark)}
+              style={{
+                color: textColor,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '0.25rem'
+              }}
+              aria-label="Toggle Dark Mode"
+            >
+              {isDark ? <SunIcon /> : <MoonIcon />}
+            </button>
+
+            <button
+              onClick={() => setMobileOpen(p => !p)}
+              aria-label="Toggle menu"
+              aria-expanded={mobileOpen}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                width: 40,
+                height: 40,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
+              {[0, 1, 2].map(i => (
+                <span key={i} style={{
+                  display: 'block',
+                  width: 20,
+                  height: 2,
+                  borderRadius: 2,
+                  background: textColor,
+                  transform: mobileOpen
+                    ? i === 0 ? 'rotate(45deg) translate(5px, 5px)'
+                    : i === 1 ? 'scaleX(0)' : 'rotate(-45deg) translate(6px, -6px)'
+                    : 'none',
+                  opacity: mobileOpen && i === 1 ? 0 : 1,
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                }} />
+              ))}
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
-        {isMobileOpen && (
+        {isMobile && mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -8, scale: 0.96 }}
+            ref={menuRef}
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.96 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden mx-4 mt-2"
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              position: 'absolute',
+              top: 'calc(100% + 0.5rem)',
+              right: 0,
+              width: '100%',
+              background: 'var(--glass-light)',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+              border: '1px solid var(--border-light)',
+              borderRadius: '1.5rem',
+              padding: '1.5rem',
+              zIndex: 999,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.5rem',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+            }}
           >
-            <div className="bg-white border border-gray-100 rounded-3xl p-3 space-y-1 shadow-lg">
-              {navLinks.map((link) => (
-                <button
-                  key={link.id}
-                  onClick={() => scrollToSection(link.id)}
-                  className={`block w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-all ${
-                    activeSection === link.id
-                      ? 'text-green-primary bg-green-50'
-                      : 'text-text-muted hover:text-text-primary hover:bg-gray-50'
-                  }`}
-                >
-                  {link.label}
-                </button>
-              ))}
-              <div className="pt-2 border-t border-gray-100">
-                <button
-                  onClick={() => { scrollToSection('contact'); }}
-                  className="w-full py-3 rounded-xl bg-green-primary text-white text-sm font-semibold hover:bg-green-secondary transition-colors"
-                >
-                  Hire Me
-                </button>
-              </div>
+            {NAV_LINKS.map(l => (
+              <button
+                key={l.id}
+                onClick={() => scrollTo(l.id)}
+                style={{
+                  padding: '1rem',
+                  background: active === l.id ? 'var(--border-light)' : 'transparent',
+                  border: 'none',
+                  borderRadius: '1rem',
+                  color: active === l.id ? textColor : mutedColor,
+                  fontSize: '1.125rem',
+                  fontWeight: active === l.id ? 600 : 500,
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  transition: 'background 0.2s ease',
+                }}
+              >
+                {l.label}
+              </button>
+            ))}
+            <div style={{ display: 'flex', gap: '1rem', padding: '1rem', marginTop: '0.5rem' }}>
+              <a href="https://github.com/RaoUmair55" target="_blank" rel="noopener noreferrer" style={{ color: mutedColor }}>
+                <GitHubIcon />
+              </a>
+              <a href="https://linkedin.com/in/rao-umair-ahmed" target="_blank" rel="noopener noreferrer" style={{ color: mutedColor }}>
+                <LinkedInIcon />
+              </a>
             </div>
+            <button
+              onClick={() => scrollTo('contact')}
+              style={{
+                marginTop: '0.5rem',
+                width: '100%',
+                padding: '1rem',
+                fontSize: '1rem',
+                fontWeight: 600,
+                background: 'var(--text-primary)',
+                color: 'var(--bg-base)',
+                border: 'none',
+                borderRadius: '1rem',
+                cursor: 'pointer',
+              }}
+            >
+              Get in touch
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </nav>
   );
 };
 

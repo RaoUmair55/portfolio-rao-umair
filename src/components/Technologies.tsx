@@ -1,33 +1,40 @@
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import {
+  SiPython, SiTensorflow, SiPytorch, SiOpencv, SiDocker, SiReact,
+  SiTypescript, SiNodedotjs, SiMongodb, SiScikitlearn, SiGnubash,
+  SiGit, SiLinux,
+} from 'react-icons/si';
+import { TbBrandMysql, TbMathFunction } from 'react-icons/tb';
+import { MdSecurity } from 'react-icons/md';
 
 const row1Items = [
-  { name: 'Python', icon: '🐍' },
-  { name: 'Wazuh SIEM', icon: '📊' },
-  { name: 'Linux', icon: '🐧' },
-  { name: 'Bash', icon: '📟' },
-  { name: 'TensorFlow', icon: '🧠' },
-  { name: 'PyTorch', icon: '🔥' },
-  { name: 'OpenCV', icon: '📷' },
-  { name: 'Docker', icon: '🐳' },
-  { name: 'SQL', icon: '🗄️' },
+  { name: 'Python', icon: <SiPython />, color: '#3776AB' },
+  { name: 'Wazuh SIEM', icon: <MdSecurity />, color: '#22c55e' },
+  { name: 'Linux', icon: <SiLinux />, color: '#FCC624' },
+  { name: 'TensorFlow', icon: <SiTensorflow />, color: '#FF6F00' },
+  { name: 'PyTorch', icon: <SiPytorch />, color: '#EE4C2C' },
+  { name: 'OpenCV', icon: <SiOpencv />, color: '#5C3EE8' },
+  { name: 'Docker', icon: <SiDocker />, color: '#2496ED' },
+  { name: 'React', icon: <SiReact />, color: '#61DAFB' },
 ];
 
 const row2Items = [
-  { name: 'TypeScript', icon: '📘' },
-  { name: 'React', icon: '⚛️' },
-  { name: 'Node.js', icon: '💚' },
-  { name: 'Express', icon: '🚀' },
-  { name: 'MongoDB', icon: '🍃' },
-  { name: 'Kubernetes', icon: '⚙️' },
-  { name: 'Git', icon: '🔀' },
-  { name: 'MATLAB', icon: '📐' },
-  { name: 'Scikit-learn', icon: '🔬' },
+  { name: 'TypeScript', icon: <SiTypescript />, color: '#3178C6' },
+  { name: 'Node.js', icon: <SiNodedotjs />, color: '#339933' },
+  { name: 'MongoDB', icon: <SiMongodb />, color: '#47A248' },
+  { name: 'Scikit-learn', icon: <SiScikitlearn />, color: '#F7931E' },
+  { name: 'Bash', icon: <SiGnubash />, color: '#4EAA25' },
+  { name: 'SQL', icon: <TbBrandMysql />, color: '#4479A1' },
+  { name: 'Git', icon: <SiGit />, color: '#F05032' },
+  { name: 'MATLAB', icon: <TbMathFunction />, color: '#e16737' },
 ];
 
-const TechChip = ({ tech }: { tech: typeof row1Items[0] }) => (
-  <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-white border border-gray-100 shadow-sm hover:border-green-primary/20 hover:shadow-md transition-all duration-300">
-    <span className="text-xl">{tech.icon}</span>
-    <span className="text-sm font-bold text-text-primary whitespace-nowrap">{tech.name}</span>
+const TechChip = ({ tech }: { tech: { name: string; icon: React.ReactNode; color: string } }) => (
+  <div className="tech-chip-premium">
+    <span className="tech-icon" style={{ color: tech.color, display: 'flex', alignItems: 'center' }}>
+      {tech.icon}
+    </span>
+    <span>{tech.name}</span>
   </div>
 );
 
@@ -35,31 +42,29 @@ const Technologies = () => {
   const { ref, isVisible } = useScrollReveal();
 
   return (
-    <section className="py-16 overflow-hidden">
+    <section className="section-light" style={{ padding: '4rem 0', overflow: 'hidden' }}>
       <div ref={ref} className={`scroll-reveal ${isVisible ? 'visible' : ''}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-          <div className="text-center scroll-reveal-child" style={{ '--i': 0 } as React.CSSProperties}>
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-text-muted">
-              Technologies I Work With
-            </p>
-          </div>
+        <div className="container-premium" style={{ marginBottom: '2rem', textAlign: 'center' }}>
+          <p className="eyebrow scroll-reveal-child" style={{ '--i': 0 } as React.CSSProperties}>
+            Tech stack
+          </p>
         </div>
-        <div className="space-y-6">
-          {/* Row 1 */}
+
+        <div className="space-y-4">
           <div className="relative overflow-hidden scroll-reveal-child" style={{ '--i': 1 } as React.CSSProperties}>
-            <div className="absolute inset-y-0 left-0 w-20 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, #F4F7F4, transparent)' }} />
-            <div className="absolute inset-y-0 right-0 w-20 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, #F4F7F4, transparent)' }} />
-            <div className="flex gap-12 animate-marquee" style={{ width: 'max-content' }}>
+            <div className="absolute inset-y-0 left-0 w-24 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, var(--bg-base), transparent)' }} />
+            <div className="absolute inset-y-0 right-0 w-24 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, var(--bg-base), transparent)' }} />
+            <div className="flex gap-4 animate-marquee" style={{ width: 'max-content' }}>
               {[...row1Items, ...row1Items].map((tech, i) => (
                 <TechChip key={`r1-${tech.name}-${i}`} tech={tech} />
               ))}
             </div>
           </div>
-          {/* Row 2 */}
+
           <div className="relative overflow-hidden scroll-reveal-child" style={{ '--i': 2 } as React.CSSProperties}>
-            <div className="absolute inset-y-0 left-0 w-20 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, #F4F7F4, transparent)' }} />
-            <div className="absolute inset-y-0 right-0 w-20 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, #F4F7F4, transparent)' }} />
-            <div className="flex gap-12 animate-marquee" style={{ width: 'max-content' }}>
+            <div className="absolute inset-y-0 left-0 w-24 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, var(--bg-base), transparent)' }} />
+            <div className="absolute inset-y-0 right-0 w-24 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, var(--bg-base), transparent)' }} />
+            <div className="flex gap-4 animate-marquee" style={{ width: 'max-content', animationDirection: 'reverse' }}>
               {[...row2Items, ...row2Items].map((tech, i) => (
                 <TechChip key={`r2-${tech.name}-${i}`} tech={tech} />
               ))}
