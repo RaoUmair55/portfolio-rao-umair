@@ -106,10 +106,10 @@ const DeveloperAvatar = ({ colors }: { colors: ColorScheme }) => (
     <line x1="220" y1="270" x2="225" y2="310" stroke={colors.tertiary} strokeWidth="2" strokeLinecap="round" opacity="0.6" style={{ transition: 'stroke 0.4s' }} />
     {/* Back logo cutout glow */}
     <path d="M160 260 Q200 280, 240 260 Q230 275, 200 280 Q170 275, 160 260Z" fill="var(--text-primary)" />
-    
+
     {/* Right sleeve/arm details */}
     <path d="M250 200 Q280 230, 280 300 Q270 300, 250 260 Z" fill="url(#hoodieGrad)" />
-    
+
     {/* Subtle wrinkles */}
     <path d="M155 330 Q200 340, 245 330 Q245 355, 200 360 Q155 355, 155 330Z" fill="var(--text-primary)" stroke="#444" strokeWidth="0.5" opacity="0.5" />
 
@@ -262,6 +262,12 @@ const ProfileAvatar = ({ colors, onAvatarClick, themeName }: { colors: ColorSche
       </span>
     </motion.div>
 
+    {/* const statItems = [
+  { type: 'number' as const, target: 38, suffix: '+', label: 'Public Repos', sub: 'Open Source on GitHub' },
+  { type: 'number' as const, target: 4, suffix: '', label: 'Live Projects', sub: '' },
+  { type: 'number' as const, target: 3, suffix: '', label: 'Certifications', sub: 'Google & ISC²' },
+  { type: 'text' as const, text: 'MITRE', label: 'ATT&CK', sub: 'Framework Trained' },
+]; */}
     {/* Floating tags */}
     {[
       { label: 'SIEM', x: '-8%', y: '18%' },
@@ -389,12 +395,12 @@ const Hero = () => {
               }}
             >
               Rao Umair{' '}
-              <span 
-                style={{ 
-                  WebkitTextStroke: '0px', 
-                  backgroundImage: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.tertiary} 100%)`, 
-                  WebkitBackgroundClip: 'text', 
-                  backgroundClip: 'text', 
+              <span
+                style={{
+                  WebkitTextStroke: '0px',
+                  backgroundImage: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.tertiary} 100%)`,
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   color: 'transparent'
                 }}

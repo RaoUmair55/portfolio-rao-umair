@@ -48,6 +48,7 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const menuRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
   const [isDark, setIsDark] = useState(() => {
     return localStorage.getItem('theme') === 'dark' ||
@@ -94,7 +95,12 @@ const Navbar = () => {
   useEffect(() => {
     if (!mobileOpen) return;
     const handler = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+      if (
+        menuRef.current && 
+        !menuRef.current.contains(e.target as Node) &&
+        toggleRef.current &&
+        !toggleRef.current.contains(e.target as Node)
+      ) {
         setMobileOpen(false);
       }
     };
@@ -296,6 +302,7 @@ const Navbar = () => {
             </button>
 
             <button
+              ref={toggleRef}
               onClick={() => setMobileOpen(p => !p)}
               aria-label="Toggle menu"
               aria-expanded={mobileOpen}

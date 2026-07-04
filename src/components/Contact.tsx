@@ -137,10 +137,10 @@ const Contact = () => {
           </div>
 
           {/* Right Side: Form */}
-          <motion.div variants={fadeUp}>
-            <div className="premium-metric-card" style={{ padding: '3rem', border: '3px solid #4b5563', borderTop: '4px solid var(--orange-mid)', background: 'var(--bg-elevated)', boxShadow: '0 20px 40px -10px rgba(0,0,0,0.08)' }}>
+          <motion.div variants={fadeUp} style={{ width: '100%' }}>
+            <div className="premium-metric-card" style={{ width: '100%', padding: '3rem', border: '3px solid #4b5563', borderTop: '4px solid var(--orange-mid)', background: 'var(--bg-elevated)', boxShadow: '0 20px 40px -10px rgba(0,0,0,0.08)' }}>
               {!sent ? (
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                <form onSubmit={handleSubmit} style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
                     <div>
                       <label style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>
