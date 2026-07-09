@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import Loader from './components/Loader';
 import ScrollProgress from './components/ScrollProgress';
 import Navbar from './components/Navbar';
