@@ -4,8 +4,27 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { certificationsData } from '../data/portfolio';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useScrollTilt } from '../hooks/useScrollTilt';
+import { FcGoogle } from 'react-icons/fc';
+import { SiCoursera, SiUdemy } from 'react-icons/si';
+import { Award, Shield, Monitor, FileBadge } from 'lucide-react';
 
 const easeSmooth = [0.23, 1, 0.32, 1] as const;
+
+const getIssuerLogo = (issuer: string, fallbackIcon: React.ReactNode) => {
+  if (!issuer) return <FileBadge size={36} color="#64748b" />;
+  const i = issuer.toLowerCase();
+  if (i.includes('google')) return <FcGoogle size={36} />;
+  if (i.includes('coursera')) return <SiCoursera size={36} color="#0056D2" />;
+  if (i.includes('udemy')) return <SiUdemy size={36} color="#A435F0" />;
+  if (i.includes('certiport')) return <Award size={36} color="#3b82f6" />;
+  if (i.includes('navttc')) return <Monitor size={36} color="#10b981" />;
+  if (i.includes('security') || i.includes('soc')) return <Shield size={36} color="#f59e0b" />;
+  
+  if (typeof fallbackIcon === 'string') {
+    return <span className="text-4xl">{fallbackIcon}</span>;
+  }
+  return <FileBadge size={36} color="#64748b" />;
+};
 
 /* ── Card grid item ── */
 const CertCard = ({ cert, index, onClick, isActive }: {
@@ -23,7 +42,7 @@ const CertCard = ({ cert, index, onClick, isActive }: {
       onClick={() => onClick(cert)}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={`flip-child light-card p-5 flex flex-col relative overflow-hidden cursor-pointer transition-all duration-300 min-h-[200px] scroll-reveal-child ${
+      className={`group flip-child light-card p-5 flex flex-col relative overflow-hidden cursor-pointer transition-all duration-300 min-h-[200px] scroll-reveal-child border-l-[4px] border-l-[#3b82f6] ${
         isActive ? 'scale-[1.06] -translate-y-3 shadow-2xl z-20' : 'hover:-translate-y-0.5'
       }`}
       style={{ transitionDelay: `${index * 0.08}s`, '--i': index, background: 'var(--bg-base)' } as React.CSSProperties}
@@ -42,20 +61,30 @@ const CertCard = ({ cert, index, onClick, isActive }: {
         </span>
       </div>
 
-      <div className="flex items-start gap-3 mb-4">
-        <div className="w-10 h-10 rounded-xl bg-[#16A34A]/20 flex items-center justify-center text-base flex-shrink-0 border border-[#16A34A]/40">
-          {cert.icon}
+      {/* Floating Creative Logo Top Right */}
+      <div className="absolute top-5 right-5 z-0 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
+        <div className="relative">
+          <div className="absolute inset-0 bg-[#3b82f6] opacity-10 blur-xl rounded-full scale-150 group-hover:opacity-30 transition-opacity duration-500"></div>
+          <div className="relative drop-shadow-md">
+            {getIssuerLogo(cert.issuer, cert.icon)}
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="text-card font-display mb-1 leading-tight" style={{ color: 'var(--text-primary)' }}>{cert.title}</h3>
-          <p className="text-[11px] font-semibold" style={{ color: 'var(--green-mid)' }}>{cert.issuer}</p>
+      </div>
+
+      <div className="mb-5 pr-14 relative z-10">
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="w-4 h-[2px] bg-[#3b82f6] rounded-full"></span>
+          <p style={{ color: '#64748b', fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            {cert.issuer}
+          </p>
         </div>
+        <h3 className="font-display leading-snug" style={{ color: 'var(--text-primary)', fontWeight: 800, fontSize: '1.15rem' }}>{cert.title}</h3>
       </div>
 
       <div className="flex-1">
         <div className="flex flex-wrap gap-1.5">
           {skills.slice(0, expanded ? skills.length : 3).map((skill) => (
-            <span key={skill} className="px-2 py-0.5 rounded bg-[#16A34A]/10 text-[11px] font-medium text-[#4ADE80] border border-[#16A34A]/30">
+            <span key={skill} className="px-2 py-0.5 rounded bg-[#f1f5f9] text-[11px] font-medium text-[#1e293b] border border-[#cbd5e1]">
               {skill}
             </span>
           ))}
@@ -63,19 +92,19 @@ const CertCard = ({ cert, index, onClick, isActive }: {
         {skills.length > 3 && (
           <button
             onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }}
-            className="mt-1.5 text-[11px] font-semibold text-[#f59e0b] hover:text-[#fcd34d] transition-colors"
+            className="mt-1.5 text-[11px] font-semibold text-[#1e293b] hover:text-[#334155] transition-colors"
           >
             {expanded ? 'Show Less' : `+${skills.length - 3} more`}
           </button>
         )}
       </div>
 
-      <div className="flex items-center justify-between gap-3 pt-3 mt-auto border-t border-[#16A34A]/20">
-        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-[#16A34A]/20 text-[#4ADE80]">
+      <div className="flex items-center justify-between gap-3 pt-3 mt-auto border-t border-[#cbd5e1]/40">
+        <span className="text-[0.85rem] font-medium text-[#64748b]">
           {cert.date}
         </span>
         {cert.credentialId && (
-          <span className="text-[10px] text-[#86efac] opacity-70">ID: {cert.credentialId}</span>
+          <span className="text-[10px] text-[#64748b] opacity-70">ID: {cert.credentialId}</span>
         )}
       </div>
     </div>

@@ -182,6 +182,18 @@ export const projectsData = [
     metric: 'Security · SIEM',
   },
   {
+    title: 'Cyber-RAG — Cybersecurity Assistant',
+    description: 'Semantic search + Groq LLM over a Cybersecurity Attack Dataset (14.1k records). Features a SOC-style query console, personal pentesting Vault, and memory-augmented Super Assistant.',
+    tech: ['Python', 'FastAPI', 'React', 'ChromaDB', 'Groq LLM'],
+    language: 'Python',
+    github: 'https://github.com/RaoUmair55/Cyber-RAG',
+    live: null,
+    icon: '🧠',
+    image: '/project-cyber-rag.png',
+    featured: true,
+    metric: 'AI/ML · RAG',
+  },
+  {
     title: 'Relief Ops Management System',
     description: 'A disaster-relief operations platform focused on managing resources, coordination, and data workflows for real-world emergency scenarios.',
     tech: ['JavaScript', 'Database Systems', 'Management'],
