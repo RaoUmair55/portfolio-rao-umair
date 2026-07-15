@@ -14,6 +14,7 @@ import SocialSidebar from './components/SocialSidebar';
 import CustomCursor from './components/CustomCursor';
 import { useLenis } from './hooks/useLenis';
 import { Analytics } from "@vercel/analytics/react";
+import { ChatWidget } from './components/ChatWidget';
 
 const App = () => {
   const [loaded, setLoaded] = useState(false);
@@ -44,6 +45,7 @@ const App = () => {
         </main>
         <Footer />
       </div>
+      <ChatWidget />
       <Analytics />
     </>
   );
