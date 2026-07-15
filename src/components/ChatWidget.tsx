@@ -63,18 +63,43 @@ export const ChatWidget = () => {
 
   return (
     <>
-      {/* Floating Action Button */}
-      <motion.button
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 w-14 h-14 rounded-full bg-[#3b82f6] text-white shadow-lg shadow-blue-500/20 flex items-center justify-center z-50 ${isOpen ? 'hidden' : 'flex'}`}
-        style={{ border: '1px solid rgba(255,255,255,0.1)' }}
-      >
-        <MessageSquare size={24} />
-      </motion.button>
+      {/* Chat Trigger Container */}
+      <div className={`fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 ${isOpen ? 'hidden' : 'flex'}`}>
+        
+        {/* Floating Note Bubble */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.5, duration: 0.5 }}
+          className="bg-[#1e293b] text-slate-200 text-xs font-medium px-4 py-2.5 rounded-2xl rounded-br-sm shadow-xl border border-[#334155] relative flex items-center gap-2"
+        >
+          <span className="text-xl">👋</span> Have a question? Ask my AI!
+          {/* Speech bubble pointer */}
+          <div className="absolute -bottom-[5px] right-5 w-2 h-2 bg-[#1e293b] border-b border-r border-[#334155] transform rotate-45"></div>
+        </motion.div>
+
+        {/* Floating Action Button */}
+        <motion.button
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setIsOpen(true)}
+          className="w-14 h-14 rounded-full bg-gradient-to-br from-[#3b82f6] to-[#1d4ed8] text-white shadow-[0_0_20px_rgba(59,130,246,0.4)] flex items-center justify-center relative group"
+          style={{ border: '1px solid rgba(255,255,255,0.2)' }}
+        >
+          {/* Inner glow / hover effect */}
+          <div className="absolute inset-0 rounded-full bg-white opacity-0 group-hover:opacity-20 transition-opacity"></div>
+          
+          <Bot size={24} className="group-hover:scale-110 transition-transform drop-shadow-md" />
+          
+          {/* Pulsing online indicator */}
+          <span className="absolute top-0 right-0 w-3.5 h-3.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-green-500 border-2 border-[#1d4ed8]"></span>
+          </span>
+        </motion.button>
+      </div>
 
       {/* Chat Window */}
       <AnimatePresence>
