@@ -7,6 +7,12 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Environment files
+.env
+.env.*
+!.env.example
+!backend/.env.example
+
 node_modules
 dist
 dist-ssr
@@ -22,3 +28,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.agent/
+.agents

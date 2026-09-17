@@ -50,8 +50,8 @@ const About = () => {
   return (
     <section id="about" ref={sectionRef} className="section-premium section-elevated" style={{ paddingTop: '8rem', paddingBottom: '8rem', background: 'var(--bg-elevated)' }}>
       <div className="container-premium">
-        
-        <motion.div 
+
+        <motion.div
           className="premium-split-container"
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
@@ -62,7 +62,7 @@ const About = () => {
             <motion.div variants={fadeUp} className="premium-profile-wrapper hidden md:block">
               <img src="/Rao Umair.jpeg" alt="Rao Umair" className="premium-profile-img" />
             </motion.div>
-            
+
             <motion.div variants={fadeUp}>
               <h2 className="font-display" style={{ fontSize: '2.5rem', lineHeight: 1.1, color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
                 Rao Umair

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "server": "cd backend && node server.js",
+    "embed": "cd backend && node scripts/embed.js",
     "dev": "pnpm install --prefer-offline && concurrently \"pnpm run server\" \"vite\"",
     "build": "pnpm install --prefer-offline && node -e \"require('fs').rmSync('node_modules/.vite-temp',{recursive:true,force:true})\" && tsc -b && vite build",
     "build:prod": "pnpm install --prefer-offline && node -e \"require('fs').rmSync('node_modules/.vite-temp',{recursive:true,force:true})\" && tsc -b && BUILD_MODE=prod vite build",
@@ -70,6 +71,7 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.184.0",
+    "vanta": "^0.5.24",
     "vaul": "^1.1.2",
     "zod": "^3.24.1"
   },

@@ -1,27 +1,34 @@
-# Rao Umair's Certifications
+# Rao Umair Ahmed's Certifications & Credentials
 
-## Google Cybersecurity Professional Certificate (v.2)
-Issuer: Google
-Date: March 2026
-Skills: Bash Scripting, Cybersecurity Incident Management, Security Analysis, SIEM Tools, Network Security, Python for Security, Risk Management, Incident Response, NIST Framework.
-Modules included: Foundations of Cybersecurity, Play It Safe: Manage Security Risks, Tools of the Trade: Linux and SQL, Sound the Alarm: Detection and Response, Assets, Threats, and Vulnerabilities, Automate Cybersecurity Tasks with Python, Put It to Work: Prepare for Cybersecurity Jobs, Accelerate Your Job Search with AI.
+## CompTIA PenTest+ ce Training
+- Issuer: Honhaar Jawan (Government of the Punjab)
+- Date: September 2026
+- Credential ID: HONHAAR-603DCCFF57
+- Verification URL: https://honhaarjawan.org/verify/HONHAAR-603DCCF-57
+- Skills: Penetration Testing, Vulnerability Scanning, Security Assessment, Network Auditing.
 
-## Gemini Certified University Student
-Issuer: Google for Education
-Date: February 2026 - Expires Feb 2029
-Skills: Google AI Tools, Gemini AI, AI Integration.
+## Google Network Security Specialization
+- Issuer: Google (via Coursera)
+- Date: August 2026
+- Credential ID: 9G0LCC478YCZ
+- Verification URL: https://coursera.org/verify/specialization/9G0LCC478YCZ
+- Skills: Network Hardening, Firewalls, Intrusion Detection Systems (IDS), Security Architecture.
 
-## Full Stack Development
-Issuer: NAVTTC
-Date: July 2024
-Skills: Web Development, Frontend, Backend, Database, API Development.
+## Google Cybersecurity Professional Certificate
+- Issuer: Google (via Coursera)
+- Date: March 2026
+- Credential ID: PPAPLQWSMK8D
+- Verification URL: https://coursera.org/verify/professional-cert/PPAPLQWSMK8D
+- Skills: Bash Scripting, Incident Management, SIEM Tools, Python for Security, Risk Management, NIST Framework.
 
-## IT Specialist - JavaScript
-Issuer: Certiport - Pearson VUE
-Date: October 2024
-Skills: JavaScript, ES6+, DOM Manipulation, Async Programming.
+## Information Technology Specialist - JavaScript
+- Issuer: Certiport (A Pearson VUE Business)
+- Date: October 2024
+- Credential Code: wbopy-FaSd
+- Verification URL: https://verify.certiport.com
+- Skills: JavaScript, ES6+, DOM Manipulation, Async Programming.
 
-## SOC-Intern Certificate
-Issuer: Security Operations Center
-Date: 2026
-Skills: SOC Operations, Threat Monitoring, Incident Triage, Security Analysis.
+## Full Stack Web Development
+- Issuer: NAVTTC (PM Youth Development Program)
+- Date: 2025
+- Skills: Full-Stack Web Development, MERN Stack, Database Design, REST APIs.

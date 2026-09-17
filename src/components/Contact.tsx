@@ -20,7 +20,7 @@ const staggerContainer = {
 const Contact = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
-  
+
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', message: '' });
@@ -37,7 +37,7 @@ const Contact = () => {
       href: 'https://github.com/RaoUmair55',
       icon: (
         <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" aria-hidden="true">
-          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.113.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.6.113.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
         </svg>
       ),
     },
@@ -46,7 +46,7 @@ const Contact = () => {
       href: 'https://www.linkedin.com/in/rao-umair-ahmed',
       icon: (
         <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24" aria-hidden="true">
-          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
         </svg>
       ),
     },
@@ -55,7 +55,7 @@ const Contact = () => {
       href: 'mailto:raoumair554@gmail.com',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="24" height="24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
       ),
     },
@@ -63,7 +63,7 @@ const Contact = () => {
 
   return (
     <section id="contact" ref={sectionRef} className="section-premium section-light" style={{ position: 'relative', overflow: 'hidden', paddingTop: '8rem', paddingBottom: '8rem', background: 'var(--bg-elevated)' }}>
-      
+
       {/* Subtle background gradient top-left */}
       <div style={{
         position: 'absolute',
@@ -76,7 +76,7 @@ const Contact = () => {
       }} />
 
       <div className="container-premium" style={{ position: 'relative', zIndex: 1 }}>
-        <motion.div 
+        <motion.div
           className="premium-split-container"
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
@@ -188,8 +188,8 @@ const Contact = () => {
                       onBlur={e => (e.target.style.borderColor = 'rgba(0,0,0,0.1)')}
                     />
                   </div>
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     disabled={sending}
                     style={{
                       width: '100%',
@@ -209,15 +209,15 @@ const Contact = () => {
                       boxShadow: '0 4px 14px 0 rgba(0,0,0,0.1)',
                       opacity: sending ? 0.8 : 1
                     }}
-                    onMouseEnter={e => { 
-                      if(!sending) {
+                    onMouseEnter={e => {
+                      if (!sending) {
                         (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
                         (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 20px rgba(0,0,0,0.15)';
                         (e.currentTarget as HTMLElement).style.background = '#000000';
                       }
                     }}
-                    onMouseLeave={e => { 
-                      if(!sending) {
+                    onMouseLeave={e => {
+                      if (!sending) {
                         (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
                         (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 14px 0 rgba(0,0,0,0.1)';
                         (e.currentTarget as HTMLElement).style.background = '#1d1d1f';
@@ -229,7 +229,7 @@ const Contact = () => {
                   </button>
                 </form>
               ) : (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '3rem 0', textAlign: 'center' }}
